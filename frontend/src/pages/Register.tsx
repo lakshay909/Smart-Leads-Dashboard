@@ -6,20 +6,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
-
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   role: z.nativeEnum(UserRole),
 });
-
 type RegisterFormValues = z.infer<typeof registerSchema>;
-
 const Register: React.FC = () => {
   const { register: registerUser, loading, error, clearError } = useAuth();
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -30,16 +26,13 @@ const Register: React.FC = () => {
       role: UserRole.SALES_USER,
     }
   });
-
   const onSubmit = async (data: RegisterFormValues) => {
     try {
       await registerUser(data);
-      navigate('/'); // Redirect to dashboard after registration
+      navigate('/'); 
     } catch (err) {
-      // Error handled in AuthContext
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
@@ -49,7 +42,6 @@ const Register: React.FC = () => {
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
         </div>
-        
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} onChange={clearError}>
           {error && (
             <div className="bg-red-50 border-l-4 border-red-400 p-4">
@@ -65,7 +57,6 @@ const Register: React.FC = () => {
               </div>
             </div>
           )}
-
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
@@ -78,7 +69,6 @@ const Register: React.FC = () => {
               />
               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
             </div>
-
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
               <input
@@ -91,7 +81,6 @@ const Register: React.FC = () => {
               />
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
-            
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
               <input
@@ -104,7 +93,6 @@ const Register: React.FC = () => {
               />
               {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
             </div>
-
             <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
               <select
@@ -118,7 +106,6 @@ const Register: React.FC = () => {
               {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>}
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -133,7 +120,6 @@ const Register: React.FC = () => {
             </button>
           </div>
         </form>
-
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
@@ -146,5 +132,4 @@ const Register: React.FC = () => {
     </div>
   );
 };
-
 export default Register;

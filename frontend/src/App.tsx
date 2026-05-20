@@ -5,7 +5,6 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
-
 function App() {
   return (
     <AuthProvider>
@@ -26,5 +25,4 @@ function App() {
     </AuthProvider>
   );
 }
-
 export default App;

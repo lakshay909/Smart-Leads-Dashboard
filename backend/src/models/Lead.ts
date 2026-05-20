@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 import { ILead, LeadStatus, LeadSource } from '../types';
-
 const leadSchema: Schema = new Schema(
   {
     name: {
@@ -30,5 +29,4 @@ const leadSchema: Schema = new Schema(
     timestamps: true,
   }
 );
-
 export default mongoose.model<ILead>('Lead', leadSchema);

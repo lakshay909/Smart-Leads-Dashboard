@@ -5,18 +5,14 @@ import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { LogIn, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
 });
-
 type LoginFormValues = z.infer<typeof loginSchema>;
-
 const Login: React.FC = () => {
   const { login, loading, error, clearError } = useAuth();
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -24,16 +20,13 @@ const Login: React.FC = () => {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
-
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data);
-      navigate('/'); // Redirect to dashboard after login
+      navigate('/'); 
     } catch (err) {
-      // Error is handled in context
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
@@ -43,7 +36,6 @@ const Login: React.FC = () => {
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
-        
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} onChange={clearError}>
           {error && (
             <div className="bg-red-50 border-l-4 border-red-400 p-4">
@@ -59,7 +51,6 @@ const Login: React.FC = () => {
               </div>
             </div>
           )}
-
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
@@ -73,7 +64,6 @@ const Login: React.FC = () => {
               />
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
-            
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
               <input
@@ -87,7 +77,6 @@ const Login: React.FC = () => {
               {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -102,7 +91,6 @@ const Login: React.FC = () => {
             </button>
           </div>
         </form>
-
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
@@ -115,5 +103,4 @@ const Login: React.FC = () => {
     </div>
   );
 };
-
 export default Login;

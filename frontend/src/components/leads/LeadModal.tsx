@@ -4,16 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { X, Loader2 } from 'lucide-react';
 import { LeadStatus, LeadSource, Lead } from '../../types';
-
 const leadSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   status: z.nativeEnum(LeadStatus, { required_error: 'Status is required' }),
   source: z.nativeEnum(LeadSource, { required_error: 'Source is required' }),
 });
-
 export type LeadFormData = z.infer<typeof leadSchema>;
-
 interface LeadModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,7 +18,6 @@ interface LeadModalProps {
   initialData?: Lead | null;
   isLoading?: boolean;
 }
-
 const LeadModal: React.FC<LeadModalProps> = ({
   isOpen,
   onClose,
@@ -43,7 +39,6 @@ const LeadModal: React.FC<LeadModalProps> = ({
       source: LeadSource.WEBSITE,
     },
   });
-
   useEffect(() => {
     if (initialData) {
       reset({
@@ -61,9 +56,7 @@ const LeadModal: React.FC<LeadModalProps> = ({
       });
     }
   }, [initialData, reset, isOpen]);
-
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
@@ -78,7 +71,6 @@ const LeadModal: React.FC<LeadModalProps> = ({
             <X className="h-5 w-5" />
           </button>
         </div>
-
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -97,7 +89,6 @@ const LeadModal: React.FC<LeadModalProps> = ({
               <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
             )}
           </div>
-
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
@@ -115,7 +106,6 @@ const LeadModal: React.FC<LeadModalProps> = ({
               <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
             )}
           </div>
-
           <div>
             <label htmlFor="status" className="block text-sm font-medium text-gray-700">
               Status
@@ -137,7 +127,6 @@ const LeadModal: React.FC<LeadModalProps> = ({
               <p className="mt-1 text-sm text-red-600">{errors.status.message}</p>
             )}
           </div>
-
           <div>
             <label htmlFor="source" className="block text-sm font-medium text-gray-700">
               Source
@@ -159,7 +148,6 @@ const LeadModal: React.FC<LeadModalProps> = ({
               <p className="mt-1 text-sm text-red-600">{errors.source.message}</p>
             )}
           </div>
-
           <div className="pt-4 flex justify-end gap-3">
             <button
               type="button"
@@ -185,5 +173,4 @@ const LeadModal: React.FC<LeadModalProps> = ({
     </div>
   );
 };
-
 export default LeadModal;

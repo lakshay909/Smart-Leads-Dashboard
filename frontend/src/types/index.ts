@@ -2,7 +2,6 @@ export enum UserRole {
   ADMIN = 'Admin',
   SALES_USER = 'Sales User',
 }
-
 export interface User {
   _id: string;
   name: string;
@@ -12,20 +11,17 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
-
 export enum LeadStatus {
   NEW = 'New',
   CONTACTED = 'Contacted',
   QUALIFIED = 'Qualified',
   LOST = 'Lost',
 }
-
 export enum LeadSource {
   WEBSITE = 'Website',
   INSTAGRAM = 'Instagram',
   REFERRAL = 'Referral',
 }
-
 export interface Lead {
   _id: string;
   name: string;
@@ -35,7 +31,6 @@ export interface Lead {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface PaginatedResponse<T> {
   success: boolean;
   data: T[];

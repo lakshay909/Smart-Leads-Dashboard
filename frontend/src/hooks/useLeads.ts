@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import api from '../services/api';
 import { Lead, PaginatedResponse } from '../types';
-
 interface FetchLeadsParams {
   page?: number;
   limit?: number;
@@ -9,20 +8,16 @@ interface FetchLeadsParams {
   status?: string;
   source?: string;
 }
-
 export const useLeads = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
   const fetchLeads = useCallback(async (params: FetchLeadsParams = {}) => {
     setLoading(true);
     setError(null);
     try {
-      // Remove empty params
       const cleanedParams = Object.fromEntries(
         Object.entries(params).filter(([_, v]) => v != null && v !== '')
       );
-
       const response = await api.get<PaginatedResponse<Lead>>('/leads', { params: cleanedParams });
       return response.data;
     } catch (err: any) {
@@ -33,7 +28,6 @@ export const useLeads = () => {
       setLoading(false);
     }
   }, []);
-
   const createLead = async (data: Omit<Lead, '_id' | 'createdAt' | 'updatedAt'>) => {
     setLoading(true);
     setError(null);
@@ -48,7 +42,6 @@ export const useLeads = () => {
       setLoading(false);
     }
   };
-
   const updateLead = async (id: string, data: Partial<Lead>) => {
     setLoading(true);
     setError(null);
@@ -63,7 +56,6 @@ export const useLeads = () => {
       setLoading(false);
     }
   };
-
   const deleteLead = async (id: string) => {
     setLoading(true);
     setError(null);
@@ -77,7 +69,6 @@ export const useLeads = () => {
       setLoading(false);
     }
   };
-
   const downloadCSV = async (params: FetchLeadsParams = {}) => {
     setLoading(true);
     setError(null);
@@ -87,10 +78,8 @@ export const useLeads = () => {
       );
       const response = await api.get('/leads/export/csv', {
         params: cleanedParams,
-        responseType: 'blob', // Important for file download
+        responseType: 'blob', 
       });
-
-      // Create blob link to download
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -106,7 +95,6 @@ export const useLeads = () => {
       setLoading(false);
     }
   };
-
   return {
     loading,
     error,

@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { IUser, UserRole } from '../types';
 import bcrypt from 'bcryptjs';
-
 const userSchema: Schema = new Schema(
   {
     name: {
@@ -21,7 +20,7 @@ const userSchema: Schema = new Schema(
       type: String,
       required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters long'],
-      select: false, // Don't return password by default
+      select: false, 
     },
     role: {
       type: String,
@@ -33,8 +32,6 @@ const userSchema: Schema = new Schema(
     timestamps: true,
   }
 );
-
-// Hash the password before saving
 userSchema.pre<IUser>('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
@@ -47,5 +44,4 @@ userSchema.pre<IUser>('save', async function (next) {
     next(error);
   }
 });
-
 export default mongoose.model<IUser>('User', userSchema);

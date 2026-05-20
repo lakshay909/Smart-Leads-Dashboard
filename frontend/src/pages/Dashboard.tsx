@@ -18,27 +18,21 @@ import { useLeads } from '../hooks/useLeads';
 import { useDebounce } from '../hooks/useDebounce';
 import LeadModal, { LeadFormData } from '../components/leads/LeadModal';
 import { useAuth } from '../context/AuthContext';
-
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const { fetchLeads, createLead, updateLead, deleteLead, downloadCSV, loading: apiLoading } = useLeads();
-
   const [searchQuery, setSearchQuery] = useState<string>('');
   const debouncedSearch = useDebounce(searchQuery, 500);
-
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [sourceFilter, setSourceFilter] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const [leads, setLeads] = useState<Lead[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
   const loadLeads = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -57,16 +51,12 @@ const Dashboard: React.FC = () => {
       setIsLoading(false);
     }
   }, [fetchLeads, currentPage, debouncedSearch, statusFilter, sourceFilter]);
-
   useEffect(() => {
     loadLeads();
   }, [loadLeads]);
-
-  // Reset page to 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearch, statusFilter, sourceFilter]);
-
   const handleCreateOrEdit = async (data: LeadFormData) => {
     setIsSubmitting(true);
     try {
@@ -77,14 +67,13 @@ const Dashboard: React.FC = () => {
       }
       setIsModalOpen(false);
       setEditingLead(null);
-      loadLeads(); // Refresh the list
+      loadLeads(); 
     } catch (error) {
       console.error('Failed to save lead', error);
     } finally {
       setIsSubmitting(false);
     }
   };
-
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this lead?')) {
       try {
@@ -95,7 +84,6 @@ const Dashboard: React.FC = () => {
       }
     }
   };
-
   const handleExportCSV = () => {
     downloadCSV({
       search: debouncedSearch,
@@ -103,23 +91,19 @@ const Dashboard: React.FC = () => {
       source: sourceFilter,
     });
   };
-
   const openCreateModal = () => {
     setEditingLead(null);
     setIsModalOpen(true);
   };
-
   const openEditModal = (lead: Lead) => {
     setEditingLead(lead);
     setIsModalOpen(true);
   };
-
   const statusOptions = Object.values(LeadStatus);
   const sourceOptions = Object.values(LeadSource);
-
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
@@ -141,11 +125,10 @@ const Dashboard: React.FC = () => {
           Create Lead
         </button>
       </div>
-
-      {/* Filter Bar */}
+      {}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
         <div className="flex flex-col lg:flex-row lg:items-center gap-3">
-          {/* Search Input */}
+          {}
           <div className="relative flex-1 min-w-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
             <input
@@ -160,10 +143,9 @@ const Dashboard: React.FC = () => {
                 transition-all duration-200"
             />
           </div>
-
-          {/* Filters Row */}
+          {}
           <div className="flex flex-wrap items-center gap-3">
-            {/* Status Filter */}
+            {}
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none" />
               <select
@@ -182,8 +164,7 @@ const Dashboard: React.FC = () => {
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none" />
             </div>
-
-            {/* Source Filter */}
+            {}
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none" />
               <select
@@ -202,8 +183,7 @@ const Dashboard: React.FC = () => {
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none" />
             </div>
-
-            {/* Export CSV */}
+            {}
             <button
               id="export-csv-btn"
               onClick={handleExportCSV}
@@ -219,8 +199,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Leads Table */}
+      {}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
         <div className="overflow-x-auto flex-1">
           <table className="w-full text-sm" id="leads-table">
@@ -244,7 +223,7 @@ const Dashboard: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {/* Loading State */}
+              {}
               {isLoading ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-20">
@@ -260,8 +239,7 @@ const Dashboard: React.FC = () => {
                   </td>
                 </tr>
               ) : leads.length === 0 ? (
-                /* Empty State */
-                <tr>
+                                <tr>
                   <td colSpan={6} className="px-6 py-20">
                     <div className="flex flex-col items-center justify-center gap-4">
                       <div className="flex items-center justify-center h-16 w-16 rounded-2xl bg-gray-100">
@@ -289,8 +267,7 @@ const Dashboard: React.FC = () => {
                   </td>
                 </tr>
               ) : (
-                /* Data Rows */
-                leads.map((lead) => (
+                                leads.map((lead) => (
                   <tr
                     key={lead._id}
                     className="hover:bg-blue-50/30 transition-colors duration-150"
@@ -347,8 +324,7 @@ const Dashboard: React.FC = () => {
             </tbody>
           </table>
         </div>
-
-        {/* Pagination */}
+        {}
         {!isLoading && leads.length > 0 && (
           <div className="flex items-center justify-between px-6 py-3 border-t border-gray-100 bg-gray-50/50">
             <div className="text-sm text-gray-500">
@@ -376,7 +352,6 @@ const Dashboard: React.FC = () => {
           </div>
         )}
       </div>
-
       <LeadModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -387,13 +362,9 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
-/* ---- Helper: Status Badge ---- */
-
 interface StatusBadgeProps {
   status: LeadStatus;
 }
-
 const statusStyles: Record<LeadStatus, string> = {
   [LeadStatus.NEW]:
     'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20',
@@ -404,7 +375,6 @@ const statusStyles: Record<LeadStatus, string> = {
   [LeadStatus.LOST]:
     'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20',
 };
-
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => (
   <span
     className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${statusStyles[status] ?? 'bg-gray-100 text-gray-700'}`}
@@ -412,5 +382,4 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => (
     {status}
   </span>
 );
-
 export default Dashboard;

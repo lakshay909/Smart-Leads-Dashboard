@@ -2,34 +2,24 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import { UserRole } from '../types';
-
 interface JwtPayload {
   id: string;
 }
-
 export const protect = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   let token;
-
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      // Get token from header
       token = req.headers.authorization.split(' ')[1];
-
-      // Verify token
       const secret = process.env.JWT_SECRET;
       if (!secret) {
         throw new Error('JWT_SECRET is not defined');
       }
-
       const decoded = jwt.verify(token, secret) as JwtPayload;
-
-      // Get user from the token and attach to req
       const user = await User.findById(decoded.id).select('-password');
       if (!user) {
         res.status(401).json({ success: false, message: 'Not authorized, user not found' });
         return;
       }
-      
       req.user = user;
       next();
     } catch (error) {
@@ -39,7 +29,6 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
     res.status(401).json({ success: false, message: 'Not authorized, no token' });
   }
 };
-
 export const authorize = (...roles: UserRole[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user || !roles.includes(req.user.role)) {
