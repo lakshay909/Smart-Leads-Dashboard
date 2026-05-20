@@ -14,7 +14,11 @@ connectDB();
 const app: Application = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*', // Assignment aur testing ke liye sabse safe, kisi bhi frontend URL ko allow kar dega
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Routes
